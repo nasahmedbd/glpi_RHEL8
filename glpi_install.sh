@@ -12,7 +12,7 @@ firewall-cmd --permanent --add-service=https
 firewall-cmd --reload
 
 ## Install required packages
-yum install dnf install php  php-mbstring php-mysqlnd php-json php-gd php-intl php-ldap php-apcu php-xmlrpc php-opcache php-zip php-xmlrpc wget tar -y
+dnf install dnf install php  php-mbstring php-mysqlnd php-json php-gd php-intl php-ldap php-apcu php-xmlrpc php-opcache php-zip php-xmlrpc wget tar -y
 
 
 ## Enable Required Services
