@@ -32,9 +32,9 @@ wget https://github.com/glpi-project/glpi/releases/download/10.0.7/glpi-10.0.7.t
 tar -xvf glpi-10.0.7.tgz
 chown -R apache:apache glpi
 chmod -R 755 glpi
-vi /etc/httpd/conf.d/glpi.conf
+touch /etc/httpd/conf.d/glpi.conf 
 
-
+sed -i 's/
 Alias /glpi "/var/www/html/glpi/"
 
 <Directory> /var/www/html/glpi/config>
@@ -49,7 +49,7 @@ Alias /glpi "/var/www/html/glpi/"
 
 
 ## Service Restart
-systemctl restart httpd.service
+systemctl restart httpd.service'  /etc/httpd/conf.d/glpi.conf 
 
 
 
