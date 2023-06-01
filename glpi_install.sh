@@ -5,6 +5,13 @@ cat /etc/selinux/config
 setenforce 0
 getenforce
 
+## Install Remi repo for latest versopn of php.
+## Here will apply php version 8.2
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+dnf module list php
+dnf module enable php:remi-8.2 -y
+php -v
 
 ## Add Firewall rule to allow http and https
 firewall-cmd --permanent --add-service=http
@@ -27,7 +34,7 @@ php -v
 
 ##https://github.com/glpi-project/glpi/releases/
 	
-cd /var/www/html/	
+cd /var/www/	
 wget https://github.com/glpi-project/glpi/releases/download/10.0.7/glpi-10.0.7.tgz
 tar -xvf glpi-10.0.7.tgz
 chown -R apache:apache glpi
