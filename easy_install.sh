@@ -1,128 +1,74 @@
 #!/bin/bash
-
 clear
-
 cd
-
 HOMEpath="/root"
-
 rep=""
-
 echo -e "\n\n\n-------------------------\n| Welcome |\n-------------------------\n\nNasim Ahmed\nFollow the easy steps and install glpi. Will install Glpi \n\n------------------------------------------------------------"
-
 until [ "$rep" = "y" ] || [ "$rep" = "n" ];
 do
-
     echo -e "\nDo you want to download GLPI ? (y/n)"
-
     read rep
-
 done
 
 if [ "$rep" = "y" ];
 then
-
     while [ -z $glpi_link ];
     do
-
         echo -e "\nPlease, put the url for downloading GLPI :"
-
         read glpi_link
-
     done
-
     UseWebForGLPI="True"
-
 else
-
     while [ -z $glpi_link ];
     do
-
         echo -e "\nPlease, put the location of the compressed file of GLPI (put the full link with \".tgz\" at the end) :"
-
         read glpi_link
-
     done
-
     UseWebForGLPI="False"
-
 fi
 
 rep=""
 
 until [ "$rep" = "y" ] || [ "$rep" = "n" ];
 do
-
     echo -e "\nDo you want to install MariaDB on this machine ? (y/n)"
-
     read rep
-
 done
-
 if [ "$rep" = "y" ];
 then
-
     InstallMariaDB="True"
-
     rep=""
-
     until [ "$rep" = "y" ] || [ "$rep" = "n" ];
     do
-
         echo -e "\nDo you want to generate secure passwords for the database ? (y/n)"
-
         read rep
-
     done
-
     if [ "$rep" = "y" ];
     then
-
         GenDBPass="True"
-
     else
-
         GenDBPass="False"
-
         var1=""
         var2=""
-
         while [ -z $var1 ] || [ -z $var2 ] || [ $var1 != $var2 ];
         do
-
             echo -e "\n\nPlease, enter the password for the user \"root\" for the database :"
-
             read -s -p "Password : " var1
-
             echo
-
             read -s -p "Repeat : " var2
-
             echo
-
         done
-
         DbRootPassword="$var1"
-
         var1=""
         var2=""
-
         while [ -z $var1 ] || [ -z $var2 ] || [ $var1 != $var2 ]; do
-
             echo -e "\n\nPlease, enter the password for the user \"glpi\" for the database :"
-
             read -s -p "Password : " var1
-
             echo
-
             read -s -p "Repeat : " var2
-
             echo
-
         done
-
         DbUserPassword="$var1"
-
     fi
 
 else
@@ -243,34 +189,26 @@ then
 
 	while [ -z $Country ];
 	do
-
-	echo -e "\nWhat country code will be displayed on the certificate ? For example FR (for France)"
+	echo -e "\nWhat country code will be displayed on the certificate ? For example BD (for Bangladesh)"
 	read Country
-
 	done
 
 	while [ -z $State ];
 	do
-
-	echo -e "\nWhich state will be displayed on the certificate ? For exemple \"Ile-De-France\""
+	echo -e "\nWhich state will be displayed on the certificate ? For exemple \"Dhaka\""
 	read State
-
 	done
 
 	while [ -z $City ];
 	do
-
-	echo -e "\nWhich city will be displayed on the certificate ? For exemple \"Paris\""
+	echo -e "\nWhich city will be displayed on the certificate ? For exemple \"Dhaka\""
 	read City
-
 	done
 
 	while [ -z $Company ];
 	do
-
 	echo -e "\nWhich company will be displayed on the certificate ?"
 	read Company
-
 	done
 
 else
@@ -283,84 +221,35 @@ rep=""
 
 until [ "$rep" = "y" ] || [ "$rep" = "n" ];
 do
-
-    echo -e "\nDo you want to configure the firewall (ufw) ? (y/n)"
-
+    echo -e "\nDo you want to configure or Disable the SELinux ? (y/n)"
     read rep
-
 done
 
 if [ "$rep" = "y" ];
 then
-
     AddFirewall="True"
-
 else
-
     AddFirewall="False"
-
 fi
 
-echo -e "\nWhat port do you want to use for SSH ? (Port 22 by default)"
-
-read SSHPort
-
-if [ -z $SSHPort ];
-then
-
-    SSHPort="22"
-
-fi
 
 rep=""
 
 until [ "$rep" = "y" ] || [ "$rep" = "n" ];
 do
-
-    echo -e "\nDo you want to configure ModSecurity ? (y/n)"
-
-    read rep
-
-done
-
-if [ "$rep" = "y" ];
-then
-
-    AddModSec="True"
-
-else
-
-    AddModSec="False"
-
-fi
-
-rep=""
-
-until [ "$rep" = "y" ] || [ "$rep" = "n" ];
-do
-
     clear
-
     echo -e "\nLink for GLPI : $glpi_link\n"
-
     echo -e "Add MariaDB : $InstallMariaDB\n"
-
     if [ "$InstallMariaDB" = "True" ];
     then
-
         echo -e "Generate passwords for db : $GenDBPass\n"
-
     fi
 
     if [ -z $Tz1 ];
     then
-
         echo -e "Timezone : No timezone\n"
-
     else
-
-        echo -e "Timezone : $Tz1/$Tz2\n"
-    
+        echo -e "Timezone : $Tz1/$Tz2\n" 
     fi
 
     echo -e "Add Fusion Inventory : $AddFusionInventory\n"
@@ -382,20 +271,11 @@ do
     fi
 
     echo -e "Add firewall : $AddFirewall\n"
-
-    echo -e "SSH port : $SSHPort\n"
-
-    echo -e "Add ModSecurity : $AddModSec\n"
-
     echo -e "\n\nDo you confirm ? (y/n)\n----------------------"
-
     read rep
-
 done
-
 if [ "$rep" = "n" ];
 then
-
     exit
 
 fi
@@ -407,10 +287,7 @@ dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 dnf module list php
 dnf module enable php:remi-8.2 -y
 
-
-
 echo -e "\n---------------------------------------------------------\nInstalling php...\n"
-
 dnf install php-mysqli -y
 dnf install php-mbstring -y
 dnf install php-curl -y
@@ -428,8 +305,7 @@ dnf install php-imap -y
 
 
 echo -e "\n---------------------------------------------------------\nUpdating Apache HTTP Server...\n"
-
-dnf update httpd.service
+dnf update httpd.service -y
 
 echo -e "\n---------------------------------------------------------\nStarting and Enabling Apache HTTP Server...\n"
 
@@ -564,37 +440,25 @@ if [ "$AddHTTPS" = "True" ];
 then
 
 	echo -e "\n---------------------------------------------------------\nConfiguring SSL/TLS...\n"
-
-    sed -i -e "s/;session.cookie_secure =/session.cookie_secure = On/g" /etc/php/$phpv/apache2/php.ini
-
-    sed -i -e "s/session.cookie_httponly =/session.cookie_httponly = On/g" /etc/php/$phpv/apache2/php.ini
+	sed -i -e "s/;session.cookie_secure =/session.cookie_secure = On/g" /etc/php/$phpv/apache2/php.ini
+	sed -i -e "s/session.cookie_httponly =/session.cookie_httponly = On/g" /etc/php/$phpv/apache2/php.ini
 
 	apt-get install libnss3-tools -y
-
 	mkdir /etc/ssl/glpi
-
 	cd /etc/ssl/glpi
-
 	openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout rootCA.key -out rootCA.pem -subj "/C=$Country/ST=$State/L=$City/O=$Company/CN=$WebSiteName"
-
 	openssl x509 -outform pem -in rootCA.pem -out rootCA.crt
-
 	echo -e "authorityKeyIdentifier=keyid,issuer\nbasicConstraints=CA:FALSE\nkeyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment\nsubjectAltName = @alt_names\n[alt_names]\nIP.1 = $addr\nDNS.1 = $WebSiteName\nDNS.2 = $HostName" > domains.ext
-
 	openssl req -new -nodes -newkey rsa:2048 -keyout GLPI.key -out GLPI.csr -subj "/C=$Country/ST=$State/L=$City/O=$Company/CN=$WebSiteName"
-
 	cp GLPI.key /etc/ssl/private/
-
 	openssl x509 -req -sha256 -days 1024 -in GLPI.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -extfile domains.ext -out GLPI.crt
-
 	cp GLPI.crt /etc/ssl/certs/
-
-  sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/glpi/g" /etc/apache2/sites-available/default-ssl.conf
-	sed -i "/DocumentRoot/i\\\t\tServerName $WebSiteName" /etc/apache2/sites-available/default-ssl.conf
-	sed -i -e "s/SSLCertificateFile.*/SSLCertificateFile\t\/etc\/ssl\/certs\/GLPI.crt/g" /etc/apache2/sites-available/default-ssl.conf
-	sed -i -e "s/SSLCertificateKeyFile.*/SSLCertificateKeyFile\t\/etc\/ssl\/private\/GLPI.key/g" /etc/apache2/sites-available/default-ssl.conf
-	sed -i "/DocumentRoot/a\\\t\t<Directory \/var\/www\/html\/glpi>\n\t\t\tOptions Indexes FollowSymLinks\n\t\t\tAllowOverride All\n\t\t\tRequire all granted\n\t\t<\/Directory>" /etc/apache2/sites-available/default-ssl.conf
-	sed -i "/DocumentRoot/i\\\tServerName $WebSiteName\n\tRedirect \/ https:\/\/$addr\/" /etc/apache2/sites-available/000-default.conf
+  	sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/glpi/g" /etc/apache2/sites-available/default-ssl.conf
+  	sed -i "/DocumentRoot/i\\\t\tServerName $WebSiteName" /etc/apache2/sites-available/default-ssl.conf
+  	sed -i -e "s/SSLCertificateFile.*/SSLCertificateFile\t\/etc\/ssl\/certs\/GLPI.crt/g" /etc/apache2/sites-available/default-ssl.conf
+  	sed -i -e "s/SSLCertificateKeyFile.*/SSLCertificateKeyFile\t\/etc\/ssl\/private\/GLPI.key/g" /etc/apache2/sites-available/default-ssl.conf
+  	sed -i "/DocumentRoot/a\\\t\t<Directory \/var\/www\/html\/glpi>\n\t\t\tOptions Indexes FollowSymLinks\n\t\t\tAllowOverride All\n\t\t\tRequire all granted\n\t\t<\/Directory>" /etc/apache2/sites-available/default-ssl.conf
+  	sed -i "/DocumentRoot/i\\\tServerName $WebSiteName\n\tRedirect \/ https:\/\/$addr\/" /etc/apache2/sites-available/000-default.conf
 	echo "ServerName $WebSiteName" >> /etc/apache2/apache2.conf
 	a2enmod ssl
 	a2ensite default-ssl
@@ -619,14 +483,5 @@ then
 fi
 
 echo -e "\n---------------------------------------------------------\nRestarting services...\n"
-
 systemctl restart httpd
-
 echo -e "----------------------------------------------------------------\n\nTo continue the installation, go to : http://$addr/\n"
-
-if [ "$AddFirewall" = "True" ];
-then
-
-    echo -e "Don't forget to enable the firewall with the command : \"sudo ufw enable\"\n\n"
-
-fi
